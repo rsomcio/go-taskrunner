@@ -1,0 +1,19 @@
+version = 2
+
+[config]
+dest_dir = "output"
+
+[[tasks]]
+name = "ls"
+cmd = "ls"
+flags = "-al"
+
+[[tasks]]
+name = "iostat"
+cmd = "iostat"
+flags = "1 5"
+
+[[tasks]]
+name = "sleep"
+cmd = "sleep"
+flags = "5"

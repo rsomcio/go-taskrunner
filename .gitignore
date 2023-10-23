@@ -1,0 +1,42 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj
+_test
+_bin
+
+# Compiled Go files
+*.6
+*.8
+*.out
+*.test
+*.prof
+
+# Generated files
+bin/
+pkg/
+src/github.com/
+src/golang.org/x/
+src/google.golang.org/
+src/golang.org/x/
+bin/
+pkg/
+
+# Task output
+output/
+
+# Vendor directory
+/vendor/
+
+# Test binary
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Tool directories
+.idea/
+.vscode/

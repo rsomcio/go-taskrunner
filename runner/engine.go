@@ -1,5 +1,13 @@
 package runner
 
+import (
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/google/uuid"
+)
+
 type Engine struct {
 	running bool
 	runArgs []string
@@ -13,23 +21,33 @@ func NewEngine() (*Engine, error) {
 	}, nil
 }
 
+// RunCommand executes the command and assumes output directory exists
 func (e *Engine) RunCommand(command string) error {
-	e.startCmd(command)
-	// cmd, stdout, stderr, err := e.startCmd(command)
-	// if err != nil {
-	// 	return err
-	// }
 
-	// defer func() {
-	// 	stdout.Close()
-	// 	stderr.Close()
-	// }()
-	// _, _ = io.Copy(os.Stdout, stdout)
-	// _, _ = io.Copy(os.Stderr, stderr)
-	// // wait for command to finish
-	// err = cmd.Wait()
-	// if err != nil {
-	// 	return err
-	// }
+	cmd, stdout, stderr, err := e.startCmd(command)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		stdout.Close()
+		stderr.Close()
+	}()
+
+	// To-Do Ray Somcio - move to configuration
+	// Save Output
+	destDir := fmt.Sprintf("%s/%s", DestDir(), uuid.New())
+	os.MkdirAll(destDir, os.ModePerm)
+	outFile := fmt.Sprintf("%s/%s", destDir, "filename.txt")
+	f, err := os.Create(outFile)
+	defer f.Close()
+	_, _ = io.Copy(f, stdout)
+	_, _ = io.Copy(f, stderr)
+
+	// wait for command to finish
+	err = cmd.Wait()
+	if err != nil {
+		return err
+	}
 	return nil
 }
